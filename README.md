@@ -8,3 +8,10 @@ shred of elegance here, except for the fact it is written in the most elegant la
 
 
 # Status: Experimental, far from production level, still a work in progress
+
+## Todo
+1. Ids for jobs (thread ids should suffice?)
+2. Save status of jobs to database, and on complete mark complete
+3. The state provided by database can also be used to restart jobs or portions of it ,if the application is restarted
+4. Tests man, tests
+5. stash thread ids of jobs to writer monad and  db, to kill if necessary
