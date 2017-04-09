@@ -4,7 +4,6 @@ module SubJob
       convertJobIntoTask
     ) where
 
-
 import           Control.Applicative
 import qualified Data.Text as T
 import           Database.SQLite.Simple
@@ -12,6 +11,8 @@ import           Database.SQLite.Simple.FromRow
 import           Jobs
 import           Data.Time
 import Prelude hiding (id)
+import           Control.Monad.Trans.Reader
+import           Control.Monad.IO.Class
 
 data SubJob = SubJob {jobId :: Int, delay :: Int, startDate_ :: T.Text, hitNo :: Int, job_ :: IO (), threadId :: Int, status :: T.Text}
 
@@ -42,8 +43,8 @@ execSubJob db x = do
                     --let mSubJob = x { threadId = threadId } -- work needs to be done here
                     return ()
                     
-execSubJobs :: Connection -> [SubJob] -> IO ()
-execSubJobs db  = mapM_ (execSubJob db) 
+execSubJobs :: [SubJob] -> ReaderT Connection IO ()
+execSubJobs subJobs =  ask >>= \db -> liftIO $ mapM_ (execSubJob db) subJobs 
                       
                        
  -- actual Job to Concurrent Task(s) (conversion)
@@ -52,7 +53,7 @@ convertJobIntoTask dbname x = do
                                conn <- open dbname
                                currentTime <- getCurrentTime
                                let subjobs = convertJobIntoSubJobs conn currentTime x
-                               execSubJobs conn subjobs                      
+                               runReaderT (execSubJobs subjobs) conn                      
                           
                              
 
