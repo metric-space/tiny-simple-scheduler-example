@@ -5,7 +5,7 @@ import Jobs
 import Data.Time
 
 job_ :: UTCTime -> Job
-job_ x = Job x (Secs 20) 4 (putStrLn "Hello")
+job_ x = Job 123 x (Secs 20) 4 (putStrLn "Hello")
 
 main :: IO ()
 main =  do
