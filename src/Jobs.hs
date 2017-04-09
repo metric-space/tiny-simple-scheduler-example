@@ -1,16 +1,19 @@
 module Jobs
     ( Job (..),
-      convertJobIntoTask
+      doTask,
+      calculateDelay 
     ) where
 
 import Time
 import Data.Time
 import Control.Concurrent
 
+
 data Job = Job { id :: Int, startDate :: UTCTime , interval :: Interval, hits :: Int, job :: IO () }
 
-doTask :: Int -> IO () -> IO ()
-doTask delay job = forkIO (threadDelay delay >> job ) >> return ()
+
+doTask :: Int -> IO () -> IO ThreadId
+doTask delay job = forkIO (threadDelay delay >> job ) 
 
 
 -- this is the thread delay, calculated as (unit: microseconds)
@@ -23,9 +26,4 @@ calculateDelay currentTime startDate interval hits
            in map (interval_ *) [0 .. hits]
 
 
--- actual Job to Concurrent Task(s) (conversion)
-convertJobIntoTask :: Job -> IO () 
-convertJobIntoTask x = do 
-                         currentTime <- getCurrentTime
-                         let timeDelays = calculateDelay currentTime (startDate x) (interval x) (hits x)
-                         mapM_ ((flip doTask)  (job x)) timeDelays 
+

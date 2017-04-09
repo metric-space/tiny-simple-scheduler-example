@@ -16,9 +16,12 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Time,
-                       Jobs
+                       Jobs,
+                       SubJob
   build-depends:       base >= 4.7 && < 5,
-                       time
+                       time,
+                       text,
+                       sqlite-simple
   default-language:    Haskell2010
 
 executable tiny-simple-scheduler-exe
@@ -28,6 +31,8 @@ executable tiny-simple-scheduler-exe
   build-depends:       base
                      , tiny-simple-scheduler
                      , time
+                     , text
+                     , sqlite-simple
   default-language:    Haskell2010
 
 test-suite tiny-simple-scheduler-test

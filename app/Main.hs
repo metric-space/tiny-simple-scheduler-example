@@ -1,16 +1,18 @@
+
 module Main where
 
 import Time
 import Jobs
+import SubJob
 import Data.Time
 
-job_ :: UTCTime -> Job
-job_ x = Job 123 x (Secs 20) 4 (putStrLn "Hello")
+jobx :: UTCTime -> Job
+jobx x = Job 1234 x (Secs 20) 4 (putStrLn "Hello")
 
 main :: IO ()
 main =  do
            currentUTC <- getCurrentTime
-           convertJobIntoTask (job_ currentUTC)
+           convertJobIntoTask "test.db" (jobx currentUTC)
            x <- getLine
            putStrLn x
 
