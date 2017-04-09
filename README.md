@@ -13,4 +13,4 @@ shred of elegance here, except for the fact it is written in the most elegant la
 ## Todo
 1. The state provided by database can also be used to restart jobs or portions of it ,if the application is restarted
 2. Tests man, tests
-3. stash thread ids of jobs to writer monad and  db, to kill if necessary
+3. stash thread ids of jobs to state monad to kill if necessary, and cleanup code with monadic abstractions like reader. state monad
