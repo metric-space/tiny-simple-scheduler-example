@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module SubJob
+module SubJobs
     ( 
       convertJobIntoTask
     ) where

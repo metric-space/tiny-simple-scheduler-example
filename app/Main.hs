@@ -3,7 +3,7 @@ module Main where
 
 import Time
 import Jobs
-import SubJob
+import SubJobs
 import Data.Time
 
 jobx :: UTCTime -> Job
