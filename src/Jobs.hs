@@ -1,6 +1,5 @@
 module Jobs
   ( Job(..)
-  , doTask
   , calculateDelay
   ) where
 
@@ -8,16 +7,13 @@ import Control.Concurrent
 import Data.Time
 import Time
 
-data Job = Job
+data Job a = Job
   { id :: Int
   , startDate :: UTCTime
   , interval :: Interval
   , hits :: Int
-  , job :: IO ()
+  , job :: IO a
   }
-
-doTask :: Int -> IO () -> IO ThreadId
-doTask delay job = forkIO (threadDelay delay >> job)
 
 -- this is the thread delay, calculated as (unit: microseconds)
 -- (startTime - currentTime) + (interval * multiplier)
