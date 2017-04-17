@@ -15,3 +15,4 @@ executable          server
                   , tiny-scheduler
                   , random
                   , time
+                  , mtl

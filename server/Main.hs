@@ -2,8 +2,8 @@
 
 import Control.Concurrent
 import Control.Concurrent.Async
-import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Reader
 import qualified Data.Text.Lazy as L
 import Data.Time
 import System.Random
@@ -21,17 +21,17 @@ statuses =
   , " zzzzzzZZZZZ .. wadya want .. zzzZZZZ"
   ]
 
-asyncStatus :: MVar L.Text -> IO ()
-asyncStatus x = do
-  g <- newStdGen
+asyncStatus :: ReaderT (MVar L.Text) IO ()
+asyncStatus = do
+  g <- liftIO newStdGen
+  x <- ask
   let length_ = length statuses
       (choice, _) = randomR (0, length_ - 1) g
-  swapMVar x (statuses !! choice) >> return ()
+  liftIO $ swapMVar x (statuses !! choice) >> return ()
 
 -- intervals of 2 minutes done 10 times
--- (probably should put this in the state monad)
 jobx :: UTCTime -> MVar L.Text -> Job ()
-jobx x y = Job 1234 x (Minutes 2) 10 (asyncStatus y)
+jobx x y = Job 1234 x (Minutes 2) 100 (runReaderT asyncStatus y)
 
 asyncJob :: MVar L.Text -> IO ()
 asyncJob y =
