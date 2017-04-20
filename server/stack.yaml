@@ -3,5 +3,5 @@ extra-package-dbs: []
 packages:
 - '.'
 extra-deps:
-- tiny-scheduler-0.1.1.2
+- tiny-scheduler-0.1.4.2
 resolver: lts-8.11

@@ -31,7 +31,7 @@ asyncStatus = do
 
 -- intervals of 2 minutes done 10 times
 jobx :: UTCTime -> MVar L.Text -> Job ()
-jobx x y = Job 1234 x (Minutes 2) 100 (runReaderT asyncStatus y)
+jobx x y = makeJob 1234 100  (Minutes 2) x (runReaderT asyncStatus y)
 
 asyncJob :: MVar L.Text -> IO ()
 asyncJob y =
