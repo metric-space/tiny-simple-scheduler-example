@@ -11,12 +11,13 @@ import Data.Maybe
 import Control.Monad.Reader
 import Control.Concurrent
 import Data.Time
+import Data.Monoid
 
 testUrl :: String
 testUrl = "http://localhost:3000"
 
 atom :: TimeAtom
-atom = mconcat [makeTimeAtom 4 (Secs 20), makeTimeAtom 100 (Minutes 3)]
+atom = (makeTimeAtom 10 $ Minutes 3) <> (makeTimeAtom 4 $ Secs 20)
 
 scrapeAndPrint :: ReaderT (MVar String) IO ()
 scrapeAndPrint = do
@@ -31,8 +32,8 @@ scrapeAndPrint = do
 
 asyncJob :: MVar String -> TimeAtom -> IO ()
 asyncJob y x = do
-  let job z = timeAtomToJob 1234 (runReaderT scrapeAndPrint y) z x
-  getCurrentTime >>= (\x -> execSubJobs . convertJobIntoSubJobs x $ job x) >> return ()
+  let jobb z = timeAtomToJob 1234 (runReaderT scrapeAndPrint y) z x
+  getCurrentTime >>= (\p -> execSubJobs . convertJobIntoSubJobs p $ jobb p) >> return ()
 
 -- make periodic calls to a site, scrape it for id=chicken
 -- check
