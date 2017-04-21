@@ -4,9 +4,9 @@ architecture
 
 - Two players (client and server)
 - server serves a page with a status that randomly changes at certain intervals
-- client periodically pulls down the page to check for status changes and if it notices a status change it sends a sms via twilio
+- client periodically pulls down the page to check for status changes and if it notices a status change it outputs the status else outputs a "nothing found yadada" line
 
 
-### why is the example a little too involved with other libraries?
+### Edits
 
-I like playing around with code a lot .. sue me
+Couldn't include Twilio because the twilio library has some weird tight constraints
